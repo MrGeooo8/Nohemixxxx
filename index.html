@@ -1,221 +1,205 @@
-
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Nohemí ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet"><style>
-    :root {
-        --primary-color: #ff9a9e;
-        --accent-color: #fad0c4;
-        --text-color: #ffffff;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        overflow: hidden;
-        font-family: 'Poppins', sans-serif;
-        background: radial-gradient(circle at top right, #2c3e50, #000000);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: var(--text-color);
-    }
-
-    .stars-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-    }
-
-    .moon {
-        position: absolute;
-        top: 50px;
-        right: 50px;
-        width: 100px;
-        height: 100px;
-        background: #fefcd7;
-        border-radius: 50%;
-        box-shadow: 0 0 40px 10px rgba(254, 252, 215, 0.3);
-        z-index: 1;
-    }
-
-    .card {
-        position: relative;
-        z-index: 10;
-        width: 85%;
-        max-width: 500px;
-        padding: 40px;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 30px;
-        text-align: center;
-        box-shadow: 0 25px 45px rgba(0,0,0,0.5);
-    }
-
-    h1 {
-        font-family: 'Dancing Script', cursive;
-        font-size: 3rem;
-        margin-bottom: 20px;
-        color: var(--primary-color);
-    }
-
-    .content-area {
-        min-height: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    p {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        margin: 0;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.8s ease;
-        display: none;
-    }
-
-    p.active {
-        display: block;
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .btn-next {
-        margin-top: 30px;
-        padding: 12px 40px;
-        border: none;
-        border-radius: 50px;
-        background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-        color: white;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-        box-shadow: 0 4px 15px rgba(255, 154, 158, 0.4);
-    }
-
-    .btn-next:hover {
-        transform: scale(1.05);
-    }
-
-    .star {
-        position: absolute;
-        background: white;
-        border-radius: 50%;
-        opacity: 0.5;
-        animation: blink 3s infinite;
-    }
-
-    @keyframes blink {
-        0%, 100% { opacity: 0.3; }
-        50% { opacity: 1; }
-    }
-
-    .petal {
-        position: absolute;
-        top: -10%;
-        pointer-events: none;
-        animation: fall linear forwards;
-    }
-
-    @keyframes fall {
-        to { transform: translateY(110vh) rotate(360deg); }
-    }
-</style>
-
-</head>
-<body><div class="stars-container" id="stars"></div>
-<div class="moon"></div><div class="card">
-    <h1>Nohemí 🌙</h1><div class="content-area">
-    <p id="t0" class="active">
-        Hay personas que no necesitan hablar mucho para llamar la atención…<br>
-        y siento que tu eres una de esas.
-    </p>
-    <p id="t1">
-        No te conozco del todo aún…<br>
-        pero lo poco que he visto, se siente diferente.
-    </p>
-    <p id="t2">
-        No vengo con palabras vacías ni promesas raras…<br>
-        solo con intención tranquila y real.
-    </p>
-    <p id="t3">
-        Sé que no confías fácilmente…<br>
-        y está bien, lo valioso no se entrega a cualquiera.
-    </p>
-    <p id="t4">
-        Pero si algún día me das la oportunidad…<br>
-        me gustaría demostrarte que no todos son iguales.
-        <br><br>
-        <span style="font-size: 2rem;">🤍</span>
-    </p>
-</div>
-
-<button class="btn-next" id="nextBtn" onclick="showNext()">Continuar 💌</button>
-
-</div><script>
-    let currentStep = 0;
-    const totalSteps = 4;
-
-    function showNext() {
-        const currentText = document.getElementById(`t${currentStep}`);
-        currentText.classList.remove('active');
-        
-        setTimeout(() => {
-            currentText.style.display = 'none';
-            currentStep++;
-            
-            const nextText = document.getElementById(`t${currentStep}`);
-            nextText.style.display = 'block';
-            
-            setTimeout(() => {
-                nextText.classList.add('active');
-            }, 50);
-
-            if (currentStep === totalSteps) {
-                document.getElementById('nextBtn').style.display = 'none';
-                startPetals();
-            }
-        }, 400);
-    }
-
-    function createStars() {
-        const container = document.getElementById('stars');
-        for (let i = 0; i < 150; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 3;
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.left = `${Math.random() * 100}%`;
-            star.style.animationDelay = `${Math.random() * 3}s`;
-            container.appendChild(star);
+    <title>Para alguien que no cree</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0c29; /* Fondo galaxia oscuro */
+            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-    }
 
-    function startPetals() {
-        const emojis = ['🌸', '✨', '🤍', '✿'];
-        setInterval(() => {
-            const petal = document.createElement('div');
-            petal.className = 'petal';
-            petal.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-            petal.style.left = Math.random() * 100 + 'vw';
-            petal.style.fontSize = Math.random() * (25 - 15) + 15 + 'px';
-            petal.style.animationDuration = Math.random() * (6 - 3) + 3 + 's';
-            document.body.appendChild(petal);
+        /* --- TERMINAL DE ESCRITURA --- */
+        .terminal-window {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
 
-            setTimeout(() => petal.remove(), 6000);
-        }, 300);
-    }
+        .code-line {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #a9feab;
+        }
 
-    createStars();
-</script></body>
+        /* --- CONTENEDOR FINAL --- */
+        .card {
+            display: none; /* Se activa con JS */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); /* Efecto cristal */
+            border-radius: 20px;
+            padding: 30px;
+            width: 85%;
+            max-width: 450px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .tree-container {
+            height: 180px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .trunk {
+            width: 8px;
+            height: 80px;
+            background: #4e342e;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 4px;
+        }
+
+        .heart {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #ff4d6d;
+            transform: rotate(-45deg);
+            animation: pulse 2s infinite alternate;
+        }
+        .heart::before, .heart::after {
+            content: ''; position: absolute; width: 12px; height: 12px;
+            background: inherit; border-radius: 50%;
+        }
+        .heart::before { top: -6px; left: 0; }
+        .heart::after { left: 6px; top: 0; }
+
+        @keyframes pulse { to { transform: rotate(-45deg) scale(1.2); } }
+
+        h1 { font-size: 1.5rem; margin-bottom: 15px; color: #ff85a1; }
+        p { font-size: 1rem; line-height: 1.6; color: #e0e0e0; }
+
+        .counter-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(255, 77, 109, 0.2);
+            border-radius: 12px;
+            border: 1px solid #ff4d6d;
+        }
+
+        #timer {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ff85a1;
+        }
+
+        .cursor { display: inline-block; width: 10px; height: 18px; background: #fff; animation: blink 0.8s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-window" id="terminal">
+        <div id="typing-area"></div>
+        <span class="cursor"></span>
+    </div>
+
+    <div class="card" id="mainCard">
+        <div class="tree-container">
+            <div class="trunk"></div>
+        </div>
+        
+        <h1>Para la que no cree en nadie...</h1>
+        <p>
+            Sé que las palabras se las lleva el viento y que confiar es difícil. 
+            No te pido que me creas hoy, solo te pido que me dejes demostrarlo. 
+        </p>
+        <p style="font-style: italic; font-size: 0.9rem;">
+            "Si me das una oportunidad, nuestro contador se vería así:"
+        </p>
+
+        <div class="counter-box">
+            <div id="timer">00d 00h 00m 00s</div>
+        </div>
+    </div>
+
+    <script>
+        // --- FECHA DE INICIO (El momento en que ella diga que sí) ---
+        // Ponemos una fecha pasada solo de ejemplo para que vea que funciona
+        const targetDate = new Date(); 
+
+        const lines = [
+            "> Iniciando protocolo_sinceridad.exe...",
+            "> Analizando barreras de desconfianza...",
+            "> Cargando argumentos reales...",
+            "> Error: Las palabras no son suficientes.",
+            "> Ejecutando: demostrar_con_hechos.js",
+            "> Redireccionando..."
+        ];
+
+        const typingArea = document.getElementById('typing-area');
+        let lineIdx = 0;
+
+        function typeTerminal() {
+            if (lineIdx < lines.length) {
+                let p = document.createElement('div');
+                p.className = 'code-line';
+                p.textContent = lines[lineIdx];
+                typingArea.appendChild(p);
+                lineIdx++;
+                setTimeout(typeTerminal, 800);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('terminal').style.display = 'none';
+                    const card = document.getElementById('mainCard');
+                    card.style.display = 'block';
+                    generateHearts();
+                    startTimer();
+                }, 1000);
+            }
+        }
+
+        function generateHearts() {
+            const container = document.querySelector('.tree-container');
+            for (let i = 0; i < 40; i++) {
+                const h = document.createElement('div');
+                h.className = 'heart';
+                h.style.left = (Math.random() * 200 - 100 + 50) + '%'; 
+                h.style.left = `calc(50% + ${Math.random() * 160 - 80}px)`;
+                h.style.top = `${Math.random() * 100}px`;
+                h.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(h);
+            }
+        }
+
+        function startTimer() {
+            setInterval(() => {
+                const now = new Date();
+                const diff = now - targetDate;
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff / 3600000) % 24);
+                const m = Math.floor((diff / 60000) % 60);
+                const s = Math.floor((diff / 1000) % 60);
+                document.getElementById('timer').textContent = 
+                    `${d}d ${h}h ${m}m ${s}s`;
+            }, 1000);
+        }
+
+        typeTerminal();
+    </script>
+</body>
 </html>

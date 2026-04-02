@@ -1,7 +1,220 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Nohemí ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #000; overflow: hidden; color: white; }
+
+        .wrapper { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+
+        #decoration-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .seccion {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(1.05);
+        }
+
+        .seccion.activa {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        /* FONDOS */
+        .bg-dia { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
+        .bg-atardecer { background: linear-gradient(to top, #f43b47 0%, #453a94 100%); }
+        .bg-noche { 
+            background: radial-gradient(circle at 50% 30%, #09203f 0%, #1e3c72 100%); 
+        }
+        .bg-final { background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%); }
+
+        /* Efecto Aurora para la noche */
+        .aurora {
+            position: absolute;
+            width: 200%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,255,150,0.1), rgba(0,150,255,0.1), transparent);
+            filter: blur(60px);
+            animation: auroraMove 15s linear infinite;
+            top: -20%; left: -50%;
+            opacity: 0;
+            transition: 2s;
+        }
+        .seccion.activa .aurora { opacity: 1; }
+
+        @keyframes auroraMove {
+            0% { transform: translateX(-10%) skewY(-5deg); }
+            50% { transform: translateX(10%) skewY(5deg); }
+            100% { transform: translateX(-10%) skewY(-5deg); }
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            padding: 45px 35px;
+            border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 85%;
+            z-index: 15;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 1.2s ease 0.6s;
+        }
+
+        .seccion.activa .card { transform: translateY(0); opacity: 1; }
+
+        h1 { font-weight: 600; font-size: 2rem; margin-bottom: 15px; letter-spacing: -0.5px; }
+        p { font-weight: 300; font-size: 1.1rem; line-height: 1.6; margin-bottom: 35px; opacity: 0.9; }
+        
+        .bg-dia h1, .bg-dia p, .bg-final h1, .bg-final p { color: #1a2a6c; }
+        .bg-dia .card, .bg-final .card { background: rgba(255,255,255,0.5); }
+
+        button {
+            padding: 15px 45px;
+            border-radius: 100px;
+            border: none;
+            background: white;
+            color: #453a94;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        button:hover { transform: translateY(-5px) scale(1.05); background: #eee; }
+        .bg-dia button, .bg-final button { background: #1a2a6c; color: white; }
+
+        /* ASTROS */
+        .astro { width: 110px; height: 110px; border-radius: 50%; margin-bottom: 25px; display: inline-block; }
+        .sol { background: #fff9ad; box-shadow: 0 0 80px #ffd700; animation: bounce 4s infinite ease-in-out; }
+        .luna { background: #fdfdfd; box-shadow: 0 0 40px rgba(255,255,255,0.8); animation: bounce 6s infinite ease-in-out; }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        .particle { position: absolute; pointer-events: none; animation: fly var(--d) linear infinite; opacity: 0; }
+        @keyframes fly {
+            0% { transform: translate(0,0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translate(var(--x), var(--y)) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div id="decoration-canvas"></div>
+
+    <div class="seccion activa bg-dia" id="s1">
+        <div class="card">
+            <div class="astro sol"></div>
+            <h1>¡Hola, Nohemí! ☀️</h1>
+            <p>Se supone que te iba a compartir mi ubicación... pero en realidad quería mostrarte algo mucho más especial.</p>
+            <button onclick="next(1)">¿Qué es? ✨</button>
+        </div>
+    </div>
+
+    <div class="seccion bg-atardecer" id="s2">
+        <div class="card">
+            <h1>Tu momento 🌅</h1>
+            <p>Sé que te encantan los atardeceres. Son mágicos, es cierto... pero incluso este se queda corto al compararlo contigo.</p>
+            <button onclick="next(2)">Continuar...</button>
+        </div>
+    </div>
+
+    <div class="seccion bg-noche" id="s3">
+        <div class="aurora"></div>
+        <div class="card">
+            <div class="astro luna"></div>
+            <h1>Modo noche 🌙</h1>
+            <p>Cuando el día termina y todo se calma, es cuando más me doy cuenta de lo mucho que disfruto hablar contigo.</p>
+            <button onclick="next(3)">Una última cosa...</button>
+        </div>
+    </div>
+
+    <div class="seccion bg-final" id="s4">
+        <div class="card">
+            <h1 style="color: #453a94;">Para ser sincero 😌</h1>
+            <p>No había ningún error en el mapa. Solo buscaba una forma creativa de decirte que me encantas y quería robarte una sonrisa.</p>
+            <button onclick="reiniciar()">Ver de nuevo 🔁</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById("decoration-canvas");
+
+    function next(n) {
+        document.getElementById("s" + n).classList.remove("activa");
+        const siguiente = document.getElementById("s" + (n + 1));
+        if (siguiente) {
+            siguiente.classList.add("activa");
+            updateDecorations(n + 1);
+        }
+    }
+
+    function updateDecorations(scene) {
+        canvas.innerHTML = '';
+        if (scene === 1) spawn('✨', 15);
+        if (scene === 2) spawn('🌸', 10);
+        if (scene === 3) spawn('⭐', 30);
+        if (scene === 4) spawn('💛', 12);
+    }
+
+    function spawn(symbol, count) {
+        for (let i = 0; i < count; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.innerText = symbol;
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = Math.random() * 100 + 'vh';
+            p.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
+            p.style.setProperty('--y', (Math.random() * -200 - 100) + 'px');
+            p.style.setProperty('--d', (Math.random() * 5 + 5) + 's');
+            p.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            canvas.appendChild(p);
+        }
+    }
+
+    function reiniciar() { location.reload(); }
+    
+    // Iniciar decoración inicial
+    updateDecorations(1);
+</script>
+
+</body>
+</html>
 

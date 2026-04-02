@@ -3,241 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Nohemí, mi mundo entero ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <title>El Misterio de Nohemí ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --accent: #ff4d6d;
-            --glass: rgba(255, 255, 255, 0.12);
+            --gold: #fccf31;
+            --pink: #f62681;
+            --glass: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #0a0a0a; 
-            color: white; 
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden; 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #312e81, #581c87, #9d174d);
+            background-size: 400% 400%;
+            animation: aurora 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            overflow-x: hidden;
+            padding: 15px;
+        }
+
+        @keyframes aurora {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header { 
+            text-align: center; 
+            margin-top: 10px;
+            width: 100%; 
+            max-width: 420px; 
+            z-index: 10;
+        }
+        
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 25px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 2.8rem; letter-spacing: 1px; }
+
+        .stats { display: flex; justify-content: space-around; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; }
+        .stats b { color: var(--gold); font-size: 1rem; }
+
+        /* TABLERO 3x4 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            max-width: 420px;
+            width: 100%;
+            perspective: 1200px;
+            z-index: 10;
+        }
+
+        .card {
+            aspect-ratio: 1/1.1;
             position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
         }
 
-        /* LLUVIA DE CORAZONES GLOBAL - Corregido z-index */
-        #heart-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .card.flipped { transform: rotateY(180deg); }
+
+        .card-face {
+            position: absolute;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 5; /* Por encima de los fondos, por debajo de las tarjetas */
-        }
-
-        #main-container {
-            width: 100%;
-            height: 100vh;
-            transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1);
-            position: relative;
-            z-index: 2;
-        }
-
-        .page {
-            width: 100%;
-            height: 100vh;
+            backface-visibility: hidden;
+            border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.15);
         }
 
-        /* FONDOS */
-        .page-1 { background: linear-gradient(135deg, #1e3c72, #2a5298, #ff9a9e); }
-        .page-2 { background: radial-gradient(circle at center, #2c3e50, #000); }
-        .page-3 { background: linear-gradient(to top, #ff758c 0%, #ff7eb3 100%); }
-        .page-4 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .page-5 { background: #fff5f7; color: #333; }
-
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 40px 30px;
-            border-radius: 35px;
-            max-width: 550px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-            position: relative;
-            z-index: 10; /* Tarjetas siempre al frente */
+        /* Frontal Estilo Lujo */
+        .front {
+            background: #fffdf9;
+            box-shadow: inset 0 0 20px rgba(201, 169, 110, 0.2);
+        }
+        .front::before {
+            content: '';
+            width: 60%; height: 60%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23c9a96e"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.2;
         }
 
-        h1 { 
-            font-family: 'Dancing Script', cursive; 
-            font-size: clamp(2.5rem, 8vw, 3.5rem); 
-            margin-bottom: 20px; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        p { 
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(1.4rem, 5vw, 1.8rem);
-            line-height: 1.3; 
-            margin-bottom: 30px; 
-            color: rgba(255, 255, 255, 0.95);
-        }
-
-        .page-5 h1, .page-5 p { color: #d63384; text-shadow: none; }
-
-        .btn {
+        /* Trasera con Brillo */
+        .back {
             background: white;
-            color: #d63384;
-            padding: 12px 35px;
-            border-radius: 50px;
-            font-family: 'Poppins', sans-serif;
+            transform: rotateY(180deg);
+            color: #1e1b4b;
             font-weight: 600;
+            font-size: 1rem;
+            text-align: center;
+            padding: 5px;
+            box-shadow: 0 0 20px rgba(252, 207, 49, 0);
+            transition: box-shadow 0.5s;
+        }
+
+        .card.matched .back {
+            box-shadow: 0 0 25px var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        /* TEXTO DINÁMICO */
+        #msg-box { min-height: 100px; width: 100%; max-width: 420px; display: flex; align-items: center; justify-content: center; }
+        #msg-text { font-family: 'Dancing Script', cursive; font-size: 1.5rem; text-align: center; line-height: 1.3; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+
+        /* PANTALLA FINAL */
+        #win-screen {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, #2e1065, #000);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 40px;
+            text-align: center;
+        }
+        #win-screen h2 { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--gold); margin-bottom: 20px; }
+        
+        .btn-restart {
+            margin-top: 30px;
+            padding: 15px 40px;
+            border-radius: 50px;
             border: none;
-            cursor: pointer;
-            transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: white;
+            color: #581c87;
+            font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
         }
+        .btn-restart:hover { transform: scale(1.1); background: var(--gold); }
 
-        .btn:hover { transform: scale(1.1); background: #ff4d6d; color: white; }
-
-        /* ANIMACIÓN DE CORAZONES - Mejorada opacidad y color */
-        .falling-heart {
-            position: absolute;
-            color: rgba(255, 182, 193, 0.4); /* Rosa muy suave y transparente */
-            pointer-events: none;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg) scale(0.8); opacity: 0; }
-            15% { opacity: 0.5; }
-            85% { opacity: 0.5; }
-            100% { transform: translateY(110vh) rotate(360deg) scale(1.2); opacity: 0; }
-        }
-
-        .star { position: absolute; background: white; border-radius: 50%; animation: blink 2.5s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        /* PARTICULAS */
+        .sparkle { position: fixed; background: white; border-radius: 50%; pointer-events: none; animation: fly 5s infinite; opacity: 0; }
+        @keyframes fly { 0% { transform: translateY(100vh); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-10vh); opacity: 0; } }
     </style>
 </head>
 <body>
 
-<div id="heart-rain"></div>
-
-<div id="main-container">
-    
-    <section class="page page-1">
-        <div class="glass-card">
-            <h1>Hola de nuevo...</h1>
-            <p>Me pediste algo más largo, algo que explicara lo que siento. Pero la verdad es que ni mil páginas alcanzarían para describir lo que causas en mí.</p>
-            <button class="btn" onclick="scrollToPage(1)">Baja conmigo...</button>
+    <header class="glass-panel">
+        <h1>Para Nohemí ✨</h1>
+        <div class="stats">
+            <div>Intentos: <b id="tries">0</b></div>
+            <div>Parejas: <b id="matches">0/6</b></div>
         </div>
-    </section>
+    </header>
 
-    <section class="page page-2">
-        <div id="stars-container"></div>
-        <div class="glass-card">
-            <h1>En la inmensidad</h1>
-            <p>A veces pienso en la suerte que tuve. Entre tanta gente, terminé hablando contigo. Me encanta cómo transformas un día cualquiera en algo que espero con ansias.</p>
-            <button class="btn" onclick="scrollToPage(2)">Sigue bajando...</button>
-        </div>
-    </section>
+    <div class="grid" id="grid"></div>
 
-    <section class="page page-3">
-        <div class="glass-card">
-            <h1>Tu sonrisa</h1>
-            <p>Si supieras lo que provocas cuando sonríes. Eres como esa canción que no puedes dejar de escuchar y que te pone de buen humor sin importar nada más.</p>
-            <button class="btn" onclick="scrollToPage(3)">Un secreto más...</button>
-        </div>
-    </section>
+    <div id="msg-box" class="glass-panel" style="margin-top: 20px;">
+        <p id="msg-text">Toca las cartas para descubrir los mensajes que tengo para ti...</p>
+    </div>
 
-    <section class="page page-4">
-        <div class="glass-card">
-            <h1>Mi destino</h1>
-            <p>Ya no necesito mapas. Me he dado cuenta de que, no importa dónde estemos, si estoy hablando contigo, me siento en casa. Tú eres el lugar que siempre busqué.</p>
-            <button class="btn" onclick="scrollToPage(4)">Finalmente...</button>
-        </div>
-    </section>
+    <div id="win-screen">
+        <h2 id="win-title">¡Increíble!</h2>
+        <p id="win-desc" style="font-size: 1.2rem; font-weight: 300; line-height: 1.6;"></p>
+        <button class="btn-restart" onclick="resetGame()">Jugar de nuevo 🔁</button>
+    </div>
 
-    <section class="page page-5">
-        <div class="glass-card">
-            <h1>Eres tú, Nohemí ❤️</h1>
-            <p>Gracias por estos minutos y por todos los que vendrán. Solo quería que supieras que me encantas completamente. <br>¿Me dejas seguir robándote sonrisas?</p>
-            <button class="btn" onclick="reiniciar()">Empezar de nuevo 🔁</button>
-        </div>
-    </section>
+    <script>
+        const pairs = [
+            { txt: 'Destino', desc: 'A veces el destino une a personas que no sabían que se buscaban.' },
+            { txt: 'Suerte', desc: 'Haber coincidido contigo es la casualidad más linda de mis días.' },
+            { txt: 'Sonrisa', desc: 'No imaginas lo mucho que me haces sonreír con solo un mensaje.' },
+            { txt: 'Misterio', desc: 'Me encanta el misterio de ir descubriendo poco a poco quién eres.' },
+            { txt: 'Conexión', desc: 'Aunque no nos hayamos visto aún, siento que te conozco de siempre.' },
+            { txt: 'Magia', desc: 'Hay algo mágico en la forma en que apareciste en mi mundo.' }
+        ];
 
-</div>
+        let cards = [];
+        let flipped = [];
+        let solved = 0;
+        let attempts = 0;
+        let lock = false;
 
-<script>
-    let currentPage = 0;
-    const container = document.getElementById('main-container');
-
-    // Iniciar lluvia de corazones INMEDIATAMENTE
-    createHeartRain();
-
-    function scrollToPage(index) {
-        currentPage = index;
-        container.style.transform = `translateY(-${currentPage * 100}vh)`;
-        if(index === 1) createStars();
-    }
-
-    function createHeartRain() {
-        const rainContainer = document.getElementById('heart-rain');
-        
-        // Función para generar un corazón
-        const spawnHeart = () => {
-            const heart = document.createElement('div');
-            heart.className = 'falling-heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-            heart.style.animationDuration = (Math.random() * 5 + 5) + 's'; // Velocidad variable
-            // Opacidad variable para profundidad
-            heart.style.opacity = Math.random() * 0.5 + 0.1; 
+        function init() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            const deck = [...pairs, ...pairs].sort(() => Math.random() - 0.5);
             
-            rainContainer.appendChild(heart);
-            
-            // Eliminar corazón después de la animación
-            setTimeout(() => heart.remove(), 10000);
-        };
-
-        // Generar corazones iniciales rápido
-        for(let i=0; i<15; i++) {
-            setTimeout(spawnHeart, i * 100);
+            deck.forEach((p, i) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.val = p.txt;
+                card.dataset.msg = p.desc;
+                card.innerHTML = `
+                    <div class="card-face front"></div>
+                    <div class="card-face back">${p.txt}</div>
+                `;
+                card.onclick = () => flip(card);
+                grid.appendChild(card);
+            });
+            createParticles();
         }
 
-        // Mantener la lluvia constante
-        setInterval(spawnHeart, 400); 
-    }
+        function flip(card) {
+            if (lock || card.classList.contains('flipped') || flipped.includes(card)) return;
+            
+            card.classList.add('flipped');
+            flipped.push(card);
 
-    function createStars() {
-        const starContainer = document.getElementById('stars-container');
-        if(starContainer.children.length > 0) return;
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            const size = Math.random() * 2 + 'px';
-            star.style.width = size; star.style.height = size;
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.left = Math.random() * 100 + 'vw';
-            starContainer.appendChild(star);
+            if (flipped.length === 2) {
+                attempts++;
+                document.getElementById('tries').innerText = attempts;
+                check();
+            }
         }
-    }
 
-    function reiniciar() {
-        currentPage = 0;
-        container.style.transform = `translateY(0vh)`;
-        setTimeout(() => {
-            window.location.reload();
-        }, 1000);
-    }
-</script>
+        function check() {
+            lock = true;
+            const [c1, c2] = flipped;
+            
+            if (c1.dataset.val === c2.dataset.val) {
+                c1.classList.add('matched');
+                c2.classList.add('matched');
+                document.getElementById('msg-text').innerText = c1.dataset.msg;
+                solved++;
+                document.getElementById('matches').innerText = `${solved}/6`;
+                flipped = [];
+                lock = false;
+                if (solved === 6) setTimeout(win, 800);
+            } else {
+                setTimeout(() => {
+                    c1.classList.remove('flipped');
+                    c2.classList.remove('flipped');
+                    flipped = [];
+                    lock = false;
+                }, 1000);
+            }
+        }
 
+        function win() {
+            const desc = document.getElementById('win-desc');
+            const title = document.getElementById('win-title');
+            
+            if (attempts <= 12) {
+                title.innerText = "¡Conexión Real! ✨";
+                desc.innerHTML = `Lo resolviste en solo ${attempts} intentos. <br>Parece que nuestras mentes ya están en sintonía, Nohemí.`;
+            } else {
+                title.innerText = "¡Lo lograste! ❤️";
+                desc.innerHTML = `Completaste el misterio. <br>Ahora solo falta descubrir el mayor secreto: <br><b>¿Me dejas seguir robándote sonrisas?</b>`;
+            }
+            
+            document.getElementById('win-screen').style.display = 'flex';
+        }
+
+        // REINICIAR CORREGIDO
+        function resetGame() {
+            document.getElementById('win-screen').style.display = 'none';
+            solved = 0;
+            attempts = 0;
+            document.getElementById('tries').innerText = '0';
+            document.getElementById('matches').innerText = '0/6';
+            document.getElementById('msg-text').innerText = 'Toca las cartas para descubrir los mensajes que tengo para ti...';
+            init(); // Reinicia el tablero sin recargar toda la página
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 40; i++) {
+                const s = document.createElement('div');
+                s.className = 'sparkle';
+                s.style.width = Math.random() * 4 + 'px';
+                s.style.height = s.style.width;
+                s.style.left = Math.random() * 100 + 'vw';
+                s.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(s);
+            }
+        }
+
+        init();
+    </script>
 </body>
 </html>

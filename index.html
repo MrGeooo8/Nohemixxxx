@@ -2,235 +2,948 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universo para Alguien Especial ✨</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Refugio Visual - Calma Total</title>
     <style>
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background: #000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; touch-action: none;
+        /* --- CSS: DISEÑO ULTRA-DECORATIVO (Original Reparado) --- */
+        :root {
+            --accent: #ff79c6;
+            --secondary: #8be9fd;
+            --background: #282a36;
+            --glass: rgba(20, 22, 30, 0.85);
+            --gold: #f1fa8c;
+            --text: #f8f8f2;
         }
 
-        .viewport {
-            width: 100vw; height: 100vh; perspective: 1200px;
-            display: flex; justify-content: center; align-items: center;
-            background: radial-gradient(circle at center, #1a0b2e 0%, #000 85%);
-            cursor: grab;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent; /* Fix móvil */
         }
 
-        .scene { position: relative; width: 0; height: 0; transform-style: preserve-3d; }
-
-        /* SOL ESFÉRICO */
-        .sun-wrapper { position: absolute; transform-style: preserve-3d; z-index: 10; }
-        .sun {
-            position: absolute; width: 90px; height: 90px;
-            background: radial-gradient(circle, #fff 10%, #ffcc00 50%, #ff6600 100%);
-            border-radius: 50%; transform: translate(-50%, -50%);
-            box-shadow: 0 0 60px #ffcc00, 0 0 120px #ff6600, 0 0 200px rgba(255, 100, 0, 0.4);
+        body {
+            background-color: #000;
+            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            height: 100vh;
+            overflow: hidden; /* Evita scroll global */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
-        /* PLANETAS (Burbujas) */
-        .planet {
-            position: absolute; border: 2px solid #ff007f; border-radius: 50%;
-            background: rgba(0, 0, 0, 0.85); box-shadow: 0 0 20px #ff007f;
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; color: white; text-align: center;
-            padding: 10px; pointer-events: none;
-        }
-        .planet img { width: 45px; height: 45px; margin-bottom: 5px; pointer-events: none; }
-        .planet p { margin: 0; font-weight: bold; font-size: 13px; text-shadow: 0 0 5px #ff007f; }
-
-        /* ESTRELLAS FUGACES FONDO */
-        .shooting-star {
-            position: absolute; width: 150px; height: 2px;
-            background: linear-gradient(90deg, #fff, transparent);
-            pointer-events: none;
+        /* Lienzo de fondo: Polvo de estrellas y partículas */
+        #main-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
 
-        /* METEORITO DE IMPACTO */
-        .meteor {
-            position: absolute; width: 25px; height: 25px;
-            background: #fff; border-radius: 50%;
-            box-shadow: 0 0 20px #ff4500, 0 0 40px #ff007f;
-            z-index: 500; pointer-events: none;
+        /* Interfaz Flotante (Glassmorphism) */
+        .app-container {
+            position: relative;
+            z-index: 10;
+            width: 95%;
+            max-width: 1100px;
+            height: 90vh; /* Un poco más alto para móvil */
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px); /* Safari Fix */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+            overflow: hidden;
+            animation: containerEntry 1s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* MENSAJE DE IMPACTO */
-        #impact-msg {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            background: rgba(0, 0, 0, 0.6); border: 2px solid #ff007f;
-            padding: 15px 30px; border-radius: 50px; color: white;
-            font-size: 22px; font-weight: bold; backdrop-filter: blur(8px);
-            box-shadow: 0 0 40px #ff007f; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1000; text-align: center; pointer-events: none;
-            white-space: nowrap;
+        /* Adaptación para pantallas pequeñas (móvil) */
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+                height: 95vh;
+                border-radius: 20px;
+            }
         }
 
-        .star-bg { position: absolute; background: white; border-radius: 50%; pointer-events: none; }
+        @keyframes containerEntry {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Barra Lateral Decorativa */
+        .nav-bar {
+            padding: 2.5rem 1.5rem;
+            background: rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: row;
+                padding: 1rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                justify-content: space-around;
+                overflow-x: auto;
+            }
+        }
+
+        .nav-bar h1 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: var(--accent);
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar h1 { display: none; } /* Ocultar título en móvil para ganar espacio */
+        }
+
+        .menu-item {
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #aaa;
+            border: 1px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .menu-item {
+                margin-bottom: 0;
+                padding: 0.8rem;
+                flex-direction: column;
+                gap: 5px;
+                font-size: 0.8rem;
+                text-align: center;
+            }
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff;
+        }
+
+        .menu-item.active {
+            background: rgba(255, 121, 198, 0.1);
+            border-color: rgba(255, 121, 198, 0.3);
+            color: var(--accent);
+            box-shadow: 0 0 15px rgba(255, 121, 198, 0.1);
+        }
+
+        .menu-item span.icon {
+            font-size: 1.2rem;
+        }
+
+        /* Contenido Dinámico */
+        .content {
+            padding: 3rem;
+            position: relative;
+            overflow-y: auto; /* Permite scroll interno si el contenido es largo */
+            -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 1.5rem; }
+        }
+
+        .view {
+            display: none;
+            animation: viewFade 0.5s ease-out;
+            height: 100%;
+        }
+
+        .view.active { 
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes viewFade {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        h2.view-title {
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            color: #fff;
+            text-align: center;
+        }
+
+        /* --- DECORACIONES ESPECÍFICAS --- */
+        
+        /* Círculo de Meditación */
+        .meditation-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .meditation-circle {
+            width: 250px;
+            height: 250px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .meditation-circle { width: 180px; height: 180px; }
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(139, 233, 253, 0.25);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .core {
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            border-radius: 50%;
+            filter: blur(15px);
+            -webkit-filter: blur(15px);
+            animation: pulse 4s infinite ease-in-out;
+            opacity: 0.7;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.4; filter: blur(15px); }
+            50% { transform: scale(2.2); opacity: 0.8; filter: blur(25px); }
+        }
+
+        #breath-label {
+            margin-top: 3rem;
+            font-size: 1.3rem;
+            letter-spacing: 8px;
+            color: var(--secondary);
+            opacity: 0.7;
+            font-weight: 300;
+        }
+
+        /* Tarjetas de Frases */
+        .phrase-stage {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        #phrase-display {
+            font-size: 1.8rem;
+            font-weight: 200;
+            line-height: 1.5;
+            min-height: 150px;
+            max-width: 600px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: opacity 0.5s;
+        }
+        
+        @media (max-width: 768px) {
+            #phrase-display { font-size: 1.4rem; }
+        }
+
+        /* Botones Estilizados */
+        .btn-fancy {
+            background: transparent;
+            border: 1px solid rgba(255, 121, 198, 0.5);
+            color: var(--accent);
+            padding: 0.9rem 2.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            outline: none;
+        }
+
+        .btn-fancy:hover {
+            background: var(--accent);
+            color: #1a1a1a;
+            box-shadow: 0 0 25px rgba(255, 121, 198, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-fancy:active {
+            transform: translateY(1px);
+        }
+
+        /* Visualizador de Audio Visual */
+        .audio-stage {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        #visualizer {
+            width: 100%;
+            height: 120px;
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            margin-bottom: 2rem;
+            padding: 0 10px;
+        }
+
+        .bar {
+            flex: 1;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 5px;
+            transition: height 0.15s ease, background 0.3s;
+            opacity: 0.7;
+        }
+
+        .audio-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+        }
+        
+        @media (max-width: 480px) {
+            .audio-controls { grid-template-columns: 1fr; }
+        }
+
+        /* Canvas de Dibujo Zen */
+        .zen-stage {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #zen-canvas {
+            width: 100%;
+            flex: 1; /* Ocupa el espacio disponible */
+            min-height: 250px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            cursor: crosshair;
+            touch-action: none; /* Crucial para móvil: evita scroll al dibujar */
+            margin-bottom: 1.5rem;
+        }
+
+        /* Scrollbar Personalizada Interna */
+        .content::-webkit-scrollbar { width: 6px; }
+        .content::-webkit-scrollbar-track { background: transparent; }
+        .content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .content::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
     </style>
 </head>
 <body>
 
-    <div id="impact-msg">✨</div>
+    <canvas id="main-canvas"></canvas>
 
-    <div class="viewport" id="viewport">
-        <div class="scene" id="scene">
-            <div class="sun-wrapper" id="sunWrapper"><div class="sun"></div></div>
-        </div>
+    <div class="app-container">
+        <nav class="nav-bar">
+            <h1>Refugio</h1>
+            <div class="menu-item active" onclick="changeView('v-meditar', this)">
+                <span class="icon">✧</span>
+                <span class="text">Meditación</span>
+            </div>
+            <div class="menu-item" onclick="changeView('v-escuchar', this)">
+                <span class="icon">♫</span>
+                <span class="text">Atmósfera</span>
+            </div>
+            <div class="menu-item" onclick="changeView('v-crear', this)">
+                <span class="icon">✎</span>
+                <span class="text">Dibujo Zen</span>
+            </div>
+            <div class="menu-item" onclick="changeView('v-mensajes', this)">
+                <span class="icon">✉</span>
+                <span class="text">Mensajes</span>
+            </div>
+        </nav>
+
+        <main class="content">
+            
+            <section id="v-meditar" class="view active">
+                <h2 class="view-title">Respira con la luz</h2>
+                <div class="meditation-stage">
+                    <div class="meditation-circle">
+                        <div class="orbit" style="width: 100%; height: 100%; animation-duration: 15s;"></div>
+                        <div class="orbit" style="width: 80%; height: 80%; animation-duration: 25s; border-color: rgba(255,121,198,0.15)"></div>
+                        <div class="orbit" style="width: 60%; height: 60%; animation-duration: 20s;"></div>
+                        <div class="core"></div>
+                    </div>
+                    <p id="breath-label">INHALA</p>
+                </div>
+            </section>
+
+            <section id="v-escuchar" class="view">
+                <h2 class="view-title">Paisajes Sonoros</h2>
+                <div class="audio-stage">
+                    <p style="margin-bottom: 0.5rem; color: #aaa; text-align: center;">Generados en tiempo real para tu calma.</p>
+                    <p style="margin-bottom: 2rem; color: #666; font-size: 0.8rem; text-align: center;">(El primer clic activa el motor de audio)</p>
+                    
+                    <div id="visualizer">
+                        </div>
+
+                    <div class="audio-controls">
+                        <button class="btn-fancy" onclick="playAtmosphere('rain')">Lluvia</button>
+                        <button class="btn-fancy" onclick="playAtmosphere('space')">Espacio</button>
+                        <button class="btn-fancy" onclick="playAtmosphere('fire')">Fuego</button>
+                        <button class="btn-fancy" style="border-color: #666; color: #aaa;" onclick="stopAllAudio()">Silencio</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="v-crear" class="view">
+                <h2 class="view-title">Trazo Libre de Luz</h2>
+                <div class="zen-stage">
+                    <p style="margin-bottom: 1rem; color: #aaa; text-align: center; max-width: 400px;">Usa el ratón o tu dedo. Los trazos brillan y permanecen.</p>
+                    <canvas id="zen-canvas"></canvas>
+                    <button class="btn-fancy" onclick="clearZenCanvas()">Limpiar Lienzo</button>
+                </div>
+            </section>
+
+            <section id="v-mensajes" class="view">
+                <div class="phrase-stage">
+                    <h2 class="view-title">Recordatorios</h2>
+                    <p id="phrase-display">Presiona el botón para recibir un pensamiento de paz.</p>
+                    <button class="btn-fancy" onclick="generateNewPhrase()">Siguiente</button>
+                </div>
+            </section>
+
+        </main>
     </div>
 
     <script>
-        const scene = document.getElementById('scene');
-        const viewport = document.getElementById('viewport');
-        const sunWrapper = document.getElementById('sunWrapper');
-        const impactMsg = document.getElementById('impact-msg');
-        
-        const loveData = [
-            { img: 'https://cdn-icons-png.flaticon.com/512/3588/3588631.png', txt: '¿POR QUÉ TAN LINDA?' },
-            { txt: 'HACES MI MUNDO BRILLAR' },
-            { img: 'https://cdn-icons-png.flaticon.com/512/1090/1090806.png', txt: 'ERES MI FAVORITA' },
-            { txt: 'UN UNIVERSO CONTIGO' },
-            { img: 'https://cdn-icons-png.flaticon.com/512/833/833472.png', txt: 'ME ENCANTAS' },
-            { txt: 'TIENES ALGO MÁGICO' }
-        ];
+        /* --- JAVASCRIPT: LÓGICA DE SISTEMA (REPARADA Y OPTIMIZADA) --- */
 
-        const specialPhrases = [
-            "¡Impactado por tu sonrisa! 😍",
-            "¡Eres de otro planeta! 🚀",
-            "¡Me dejas sin palabras! ✨",
-            "¡Mi mundo gira por ti! 💖",
-            "¡Eres una estrella! ⭐",
-            "¡Qué suerte conocerte! 😊"
-        ];
+        // -- Globales --
+        let mouse = { x: -1000, y: -1000 };
+        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-        const planets = [];
-        
-        // Estrellas de fondo estáticas
-        for(let i=0; i<200; i++) {
-            const s = document.createElement('div');
-            s.className = 'star-bg';
-            const size = Math.random() * 2;
-            s.style.width = s.style.height = size + 'px';
-            const [x, y, z] = [Math.random()-0.5, Math.random()-0.5, Math.random()-0.5].map(v => v * 3000);
-            s.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
-            scene.appendChild(s);
+        // 1. Motor de Fondo Estelar (Canvas Principal)
+        const canvas = document.getElementById('main-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                // Colores del tema Dracula
+                this.color = Math.random() > 0.4 ? '#ff79c6' : '#8be9fd';
+                this.opacity = Math.random() * 0.8;
+                this.wobble = Math.random() * Math.PI * 2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.wobble += 0.01;
+
+                // Atracción muy suave al mouse si no es móvil
+                if(!isMobile) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+                    if (distance < 200) {
+                        this.x += dx * 0.001;
+                        this.y += dy * 0.001;
+                    }
+                }
+
+                // Opacidad fluctuante (parpadeo)
+                this.currentOpacity = this.opacity + Math.sin(this.wobble) * 0.2;
+
+                // Re-spawn si sale de la pantalla
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.currentOpacity);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                // Efecto de brillo simple
+                if(this.size > 1.5) {
+                    ctx.shadowBlur = 5;
+                    ctx.shadowColor = this.color;
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
         }
 
-        // Crear Planetas Orbitantes
-        loveData.forEach((data, i) => {
-            const pEl = document.createElement('div');
-            pEl.className = 'planet';
-            pEl.style.width = pEl.style.height = '125px';
-            if(data.img) {
-                const img = document.createElement('img'); img.src = data.img;
-                pEl.appendChild(img);
+        function initBackground() {
+            // Ajustar resolución del canvas
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            // Menos partículas en móvil para rendimiento
+            let numParticles = isMobile ? 80 : 150;
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
             }
-            const p = document.createElement('p'); p.textContent = data.txt;
-            pEl.appendChild(p);
-            scene.appendChild(pEl);
-            
-            planets.push({
-                el: pEl,
-                angle: (i / loveData.length) * Math.PI * 2,
-                radius: 350 + (i * 25),
-                speed: 0.004 + (Math.random() * 0.002),
-                yPos: (Math.random() - 0.5) * 250
+        }
+
+        function animateBackground() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Fondo ligeramente azulado profundo
+            ctx.fillStyle = 'rgba(10, 12, 18, 1)';
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
             });
+            requestAnimationFrame(animateBackground);
+        }
+
+        // Eventos de Mouse para el fondo
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        window.addEventListener('mouseout', () => {
+            mouse.x = -1000; mouse.y = -1000;
         });
 
-        // Estrellas fugaces de fondo constantes
-        function shootStar() {
-            const s = document.createElement('div');
-            s.className = 'shooting-star';
-            const [x, y, z] = [(Math.random()-0.5)*2500, (Math.random()-0.5)*2500, (Math.random()-0.5)*1500];
-            s.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotate(${Math.random()*360}deg)`;
-            scene.appendChild(s);
-            s.animate([{left: '-100px', opacity: 1}, {left: '500px', opacity: 0}], {duration: 1200});
-            setTimeout(() => s.remove(), 1200);
-        }
-        setInterval(shootStar, 600);
 
-        // --- SISTEMA DE IMPACTOS MÚLTIPLES ---
-        function launchMeteor() {
-            const m = document.createElement('div');
-            m.className = 'meteor';
-            scene.appendChild(m);
+        // 2. Control de Vistas y Navegación
+        function changeView(viewId, btnElement) {
+            // Desactivar vistas anteriores
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
             
-            // Elegir un planeta al azar para el impacto
-            const target = planets[Math.floor(Math.random() * planets.length)];
-            const startPos = { x: (Math.random()-0.5)*2000, y: -1000, z: (Math.random()-0.5)*1000 };
+            // Activar nueva vista
+            document.getElementById(viewId).classList.add('active');
+            if(btnElement) btnElement.classList.add('active');
             
-            let progress = 0;
-            const anim = setInterval(() => {
-                progress += 0.025; // Velocidad del meteorito
-                
-                // Posición actual del planeta (se mueve mientras el meteorito cae)
-                const px = Math.cos(target.angle) * target.radius;
-                const py = target.yPos;
-                const pz = Math.sin(target.angle) * target.radius;
-
-                // Interpolación para el movimiento del meteorito
-                const mx = startPos.x + (px - startPos.x) * progress;
-                const my = startPos.y + (py - startPos.y) * progress;
-                const mz = startPos.z + (pz - startPos.z) * progress;
-
-                m.style.transform = `translate3d(${mx}px, ${my}px, ${mz}px)`;
-
-                if(progress >= 1) {
-                    clearInterval(anim);
-                    m.remove();
-                    showImpactMessage();
-                }
-            }, 16);
+            // Lógica específica al cambiar de vista
+            if(viewId === 'v-crear') {
+                // Pequeño delay para asegurar que el canvas es visible antes de dimensionar
+                setTimeout(initZenCanvas, 50);
+            } else if (viewId !== 'v-escuchar') {
+                // Podríamos pausar visualizadores aquí si quisiéramos
+            }
         }
 
-        function showImpactMessage() {
-            impactMsg.textContent = specialPhrases[Math.floor(Math.random()*specialPhrases.length)];
-            impactMsg.style.transform = "translate(-50%, -50%) scale(1.2)";
-            impactMsg.style.opacity = "1";
+        // 3. Sistema de Respiración (Lógica visual original)
+        const breatheLabel = document.getElementById('breath-label');
+        const breathPhases = [
+            { text: "INHALA", color: "#8be9fd" }, // Cian
+            { text: "MANTÉN", color: "#f1fa8c" },  // Amarillo
+            { text: "EXHALA", color: "#ff79c6" },  // Rosa
+            { text: "PAUSA", color: "#6272a4" }    // Gris azulado
+        ];
+        let breathIdx = 0;
+
+        function updateBreathingLoop() {
+            const phase = breathPhases[breathIdx];
+            breatheLabel.innerText = phase.text;
+            breatheLabel.style.color = phase.color;
+            breatheLabel.style.opacity = 0;
+            
+            // Fade in suave del texto
+            let opacity = 0;
+            let fadeIn = setInterval(() => {
+                opacity += 0.1;
+                breatheLabel.style.opacity = opacity;
+                if(opacity >= 0.7) clearInterval(fadeIn);
+            }, 30);
+
+            breathIdx = (breathIdx + 1) % breathPhases.length;
+        }
+
+        // Iniciar ciclo de respiración (cada 4 segundos cambia)
+        updateBreathingLoop(); 
+        setInterval(updateBreathingLoop, 4000);
+
+
+        // 4. Generador de Frases (Original)
+        const phrases = [
+            "No tienes que resolver todo hoy. Solo respira.",
+            "Tus nubes grises también forman parte de tu cielo.",
+            "El descanso no es pereza, es una necesidad del alma.",
+            "Eres suficiente, incluso en tus días de silencio.",
+            "Permítete sentir sin juzgarte.",
+            "Incluso las flores necesitan lluvia para crecer.",
+            "Tu valor no depende de tu productividad.",
+            "Está bien no estar bien a veces.",
+            "Mañana será un nuevo lienzo. Hoy, solo descansa.",
+            "Todo pasa, esto también pasará.",
+            "Respira profundo. Estás aquí."
+        ];
+        let lastPhraseIdx = -1;
+
+        function generateNewPhrase() {
+            const display = document.getElementById('phrase-display');
+            // Fade out
+            display.style.opacity = 0;
             
             setTimeout(() => {
-                impactMsg.style.transform = "translate(-50%, -50%) scale(0)";
-                impactMsg.style.opacity = "0";
-            }, 2000);
-        }
-
-        // Lanza meteoritos en ráfagas
-        setInterval(() => {
-            launchMeteor();
-            setTimeout(launchMeteor, 1500); // Un segundo meteorito poco después
-        }, 7000); 
-
-        // Rotación de Cámara 360 e Interacción
-        let rotX = -10, rotY = 0, tRotX = -10, tRotY = 0, isDown = false, sX, sY;
-        viewport.onpointerdown = e => { isDown = true; sX = e.clientX; sY = e.clientY; };
-        window.onpointermove = e => { if(!isDown) return; tRotY += (e.clientX-sX)*0.2; tRotX -= (e.clientY-sY)*0.2; sX = e.clientX; sY = e.clientY; };
-        window.onpointerup = () => isDown = false;
-
-        function draw() {
-            // Suavizado de rotación
-            rotX += (tRotX - rotX) * 0.1; rotY += (tRotY - rotY) * 0.1;
-            scene.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-            
-            // Sol siempre mirando a cámara
-            sunWrapper.style.transform = `rotateY(${-rotY}deg) rotateX(${-rotX}deg)`;
-
-            planets.forEach(p => {
-                p.angle += p.speed;
-                const x = Math.cos(p.angle) * p.radius;
-                const z = Math.sin(p.angle) * p.radius;
+                let nextIdx;
+                // Evitar repetir la misma frase
+                do {
+                    nextIdx = Math.floor(Math.random() * phrases.length);
+                } while (nextIdx === lastPhraseIdx);
                 
-                // Billboard effect + escala por profundidad
-                const s = 1 + (z / 1500);
-                p.el.style.transform = `translate3d(${x}px, ${p.yPos}px, ${z}px) 
-                                       rotateY(${-rotY}deg) rotateX(${-rotX}deg) 
-                                       scale(${s})`;
-                p.el.style.zIndex = Math.round(z + 500);
-                p.el.style.opacity = 0.5 + ((z + 500) / 1000); // Más tenue al fondo
-            });
-            requestAnimationFrame(draw);
+                lastPhraseIdx = nextIdx;
+                display.innerText = phrases[nextIdx];
+                // Fade in
+                display.style.opacity = 1;
+            }, 500);
         }
-        draw();
+
+
+        // 5. Audio Dinámico (Sintetizado, FIX para inicio en Móvil)
+        let audioCtx = null;
+        let activeSources = {};
+        const visContainer = document.getElementById('visualizer');
+        const numBars = isMobile ? 20 : 40; // Menos barras en móvil
+        let bars = [];
+        let visualizerAnimation = null;
+
+        // Crear barras del visualizador
+        for(let i=0; i < numBars; i++) {
+            let bar = document.createElement('div');
+            bar.className = 'bar';
+            visContainer.appendChild(bar);
+            bars.push(bar);
+        }
+
+        // *** FIX CRUCIAL MÓVIL ***: Despertar AudioContext con interacción
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                console.log("AudioContext iniciado.");
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+                console.log("AudioContext reanudado.");
+            }
+        }
+
+        // Despierta el audio en el primer toque/clic en la App
+        document.body.addEventListener('click', initAudioContext, { once: true });
+        document.body.addEventListener('touchstart', initAudioContext, { once: true });
+
+
+        function createNoiseBuffer(type) {
+            const bufferSize = 2 * audioCtx.sampleRate;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = buffer.getChannelData(0);
+
+            if (type === 'fire') {
+                // Ruido "marrón" (Brown noise) para fuego, más suave y grave
+                let lastOut = 0.0;
+                for (let i = 0; i < bufferSize; i++) {
+                    let white = Math.random() * 2 - 1;
+                    output[i] = (lastOut + (0.02 * white)) / 1.02;
+                    lastOut = output[i];
+                    output[i] *= 3.5; // Ajuste de volumen base
+                }
+            } else {
+                // Ruido blanco base para lluvia y espacio
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+            }
+            return buffer;
+        }
+
+        function playAtmosphere(type) {
+            if(!audioCtx) initAudioContext(); // Intento de respaldo
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+
+            // Si ya está sonando este tipo, no hacer nada
+            if (activeSources[type]) return;
+
+            // Parar otros sonidos (diseño original: uno a la vez)
+            stopAllAudio(false); 
+
+            const source = audioCtx.createBufferSource();
+            source.buffer = createNoiseBuffer(type);
+            source.loop = true;
+
+            const gainNode = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            // Configuración de filtros (Originales mejorados)
+            if(type === 'rain') {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(600, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 2); // Fade in suave
+                visContainer.style.borderBottom = `2px solid var(--secondary)`;
+            } else if(type === 'space') {
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(150, audioCtx.currentTime);
+                filter.Q.setValueAtTime(1, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 3);
+                visContainer.style.borderBottom = `2px solid #bd93f9`; // Morado
+            } else if(type === 'fire') {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(400, audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 2);
+                visContainer.style.borderBottom = `2px solid var(--accent)`;
+            }
+
+            source.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            source.start();
+            activeSources[type] = {source, gainNode, type};
+
+            // Resetear color de barras
+            bars.forEach(b => b.style.background = getComputedStyle(document.documentElement).getPropertyValue(type === 'rain' ? '--secondary' : (type === 'space' ? '#bd93f9' : '--accent')));
+
+            if(!visualizerAnimation) animateVisualizer();
+        }
+
+        function stopAllAudio(fadeOutVisualizer = true) {
+            let hasActive = false;
+            for (const key in activeSources) {
+                hasActive = true;
+                const node = activeSources[key];
+                // Fade out suave antes de parar
+                node.gainNode.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+                node.source.stop(audioCtx.currentTime + 1.1);
+                delete activeSources[key];
+            }
+
+            if(fadeOutVisualizer && hasActive) {
+                visContainer.style.borderBottom = `2px solid transparent`;
+                // Dejar que la animación se detenga sola en el próximo frame
+            }
+        }
+
+        function animateVisualizer() {
+            const hasActiveAudio = Object.keys(activeSources).length > 0;
+
+            if(!hasActiveAudio) {
+                // Volver a posición base suavemente
+                bars.forEach(bar => {
+                    let currentH = parseFloat(bar.style.height) || 4;
+                    if(currentH > 5) {
+                        bar.style.height = (currentH * 0.8) + 'px';
+                    } else {
+                        bar.style.height = '4px';
+                    }
+                });
+                
+                // Si todas volvieron a la base, parar animación
+                if(bars.every(bar => (parseFloat(bar.style.height) || 4) <= 5)) {
+                    visualizerAnimation = null;
+                    return; 
+                }
+            } else {
+                // Animación activa (aleatoria simulada, ya que no analizamos el buffer real por rendimiento)
+                bars.forEach(bar => {
+                    // Altura base + aleatoriedad
+                    let baseH = 10;
+                    let randH = Math.random() * 80;
+                    // Suavizado simple con la altura anterior
+                    let prevH = parseFloat(bar.style.height) || 4;
+                    let targetH = baseH + randH;
+                    let newH = prevH + (targetH - prevH) * 0.3;
+
+                    bar.style.height = Math.max(4, newH) + 'px';
+                });
+            }
+            
+            visualizerAnimation = requestAnimationFrame(animateVisualizer);
+        }
+
+
+        // 6. Canvas de Dibujo Zen (Original + ***TOTAL FIX TÁCTIL***)
+        const zenCanvas = document.getElementById('zen-canvas');
+        const zCtx = zenCanvas.getContext('2d');
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let hue = 180; // Color inicial (cian)
+
+        function initZenCanvas() {
+            // Asegurar que el canvas tiene el tamaño correcto de su contenedor CSS
+            const container = zenCanvas.parentElement;
+            // Solo redimensionar si el tamaño ha cambiado significativamente para evitar borrados accidentales en móvil al salir/entrar teclados
+            if(Math.abs(zenCanvas.width - container.clientWidth) > 20) {
+                zenCanvas.width = container.clientWidth;
+                zenCanvas.height = container.clientHeight - 100; // Restar espacio de texto y botón
+                clearZenCanvas(false); // Limpieza inicial sin avisar
+            }
+        }
+
+        // Configuración del pincel (Estilo Neón Original)
+        function setupContext() {
+            zCtx.strokeStyle = `hsl(${hue}, 100%, 70%)`;
+            zCtx.lineWidth = isMobile ? 3 : 4; // Más fino en PC
+            zCtx.lineCap = 'round';
+            zCtx.lineJoin = 'round';
+            // Brillo neón
+            zCtx.shadowBlur = isMobile ? 8 : 12;
+            zCtx.shadowColor = `hsl(${hue}, 100%, 70%)`;
+            zCtx.globalCompositeOperation = 'source-over';
+        }
+
+        function getCoordinates(e) {
+            const rect = zenCanvas.getBoundingClientRect();
+            // Soporte para eventos de ratón Y toques táctiles
+            let clientX, clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            // Activar AudioContext si no se hizo antes (doble seguridad móvil)
+            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            
+            isDrawing = true;
+            const coords = getCoordinates(e);
+            lastX = coords.x;
+            lastY = coords.y;
+            
+            // Dibujar un punto inicial
+            setupContext();
+            zCtx.beginPath();
+            zCtx.arc(lastX, lastY, zCtx.lineWidth/2, 0, Math.PI*2);
+            zCtx.fillStyle = zCtx.strokeStyle;
+            zCtx.fill();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            // *** FIX MÓVIL ***: Prevenir scroll predeterminado al dibujar
+            if(e.cancelable) e.preventDefault();
+
+            const coords = getCoordinates(e);
+            setupContext();
+            
+            zCtx.beginPath();
+            zCtx.moveTo(lastX, lastY);
+            zCtx.lineTo(coords.x, coords.y);
+            zCtx.stroke();
+            
+            lastX = coords.x;
+            lastY = coords.y;
+            
+            // Cambiar color sutilmente
+            hue = (hue + 1) % 360;
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // --- Eventos de Mouse (PC) ---
+        zenCanvas.addEventListener('mousedown', startDrawing);
+        window.addEventListener('mousemove', draw); // Window para no perder el trazo al mover rápido
+        window.addEventListener('mouseup', stopDrawing);
+
+        // --- Eventos Touch (*** TOTAL FIX TÁCTIL MÓVIL ***) ---
+        // passive: false es necesario para poder usar preventDefault()
+        zenCanvas.addEventListener('touchstart', startDrawing, { passive: false });
+        zenCanvas.addEventListener('touchmove', draw, { passive: false });
+        window.addEventListener('touchend', stopDrawing);
+        window.addEventListener('touchcancel', stopDrawing); // Interrupción (ej: llamada)
+
+
+        function clearZenCanvas(drawNuke = true) {
+            if(drawNuke) {
+                // Efecto visual de borrado (flash blanco suave)
+                zCtx.save();
+                zCtx.globalCompositeOperation = 'destination-out';
+                zCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                zCtx.fillRect(0, 0, zenCanvas.width, zenCanvas.height);
+                zCtx.restore();
+                
+                setTimeout(() => {
+                    zCtx.clearRect(0, 0, zenCanvas.width, zenCanvas.height);
+                }, 100);
+            } else {
+                zCtx.clearRect(0, 0, zenCanvas.width, zenCanvas.height);
+            }
+        }
+
+
+        // 7. Inicialización General y Ciclo de Vida
+        window.onload = () => {
+            initBackground();
+            animateBackground();
+            generateNewPhrase(); // Frase inicial
+            
+            // Pre-cargar audio context si es posible (en PC funciona)
+            try { initAudioContext(); } catch(e) {}
+        };
+
+        // Re-dimensionar canvas si cambia el tamaño de ventana
+        window.addEventListener('resize', () => {
+            initBackground();
+            // Si la vista de dibujo está activa, redimensionar su canvas también
+            if(document.getElementById('v-crear').classList.contains('active')) {
+                initZenCanvas();
+            }
+        });
+
     </script>
 </body>
 </html>
